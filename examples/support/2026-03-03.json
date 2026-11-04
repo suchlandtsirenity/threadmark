@@ -1,0 +1,102 @@
+[
+  {
+    "type": "message",
+    "ts": "1772530200.000124",
+    "user": "UKIM",
+    "user_profile": {
+      "display_name": "kim",
+      "real_name": "kim"
+    },
+    "text": "Brightside reports duplicate invoices created from their Stripe webhook, roughly 1 in 50"
+  },
+  {
+    "type": "message",
+    "ts": "1772530380.000125",
+    "user": "UPRIYA",
+    "user_profile": {
+      "display_name": "priya",
+      "real_name": "priya"
+    },
+    "text": "probably Stripe retrying after a slow response from us. Do the duplicates have the same Stripe event ID?"
+  },
+  {
+    "type": "message",
+    "ts": "1772530560.000126",
+    "user": "UDANA",
+    "user_profile": {
+      "display_name": "dana",
+      "real_name": "dana"
+    },
+    "text": "unrelated but three customers this week asked for a dark mode. Is that on the roadmap?"
+  },
+  {
+    "type": "message",
+    "ts": "1772530680.000127",
+    "user": "UKIM",
+    "user_profile": {
+      "display_name": "kim",
+      "real_name": "kim"
+    },
+    "text": "yes, same event ID on each pair"
+  },
+  {
+    "type": "message",
+    "ts": "1772530800.000128",
+    "user": "ULEE",
+    "user_profile": {
+      "display_name": "lee",
+      "real_name": "lee"
+    },
+    "text": "dark mode isn't planned this quarter. Can you add those customers to the feature request so we can count them?"
+  },
+  {
+    "type": "message",
+    "ts": "1772530860.000129",
+    "user": "UPRIYA",
+    "user_profile": {
+      "display_name": "priya",
+      "real_name": "priya"
+    },
+    "text": "then we're not deduplicating on event ID. I'll add an idempotency check keyed on it."
+  },
+  {
+    "type": "message",
+    "ts": "1772530980.000130",
+    "user": "UDANA",
+    "user_profile": {
+      "display_name": "dana",
+      "real_name": "dana"
+    },
+    "text": "will do"
+  },
+  {
+    "type": "message",
+    "ts": "1772531100.000131",
+    "user": "UMO",
+    "user_profile": {
+      "display_name": "mo",
+      "real_name": "mo"
+    },
+    "text": "lunch order going in at 11 if anyone wants in"
+  },
+  {
+    "type": "message",
+    "ts": "1772533200.000132",
+    "user": "UPRIYA",
+    "user_profile": {
+      "display_name": "priya",
+      "real_name": "priya"
+    },
+    "text": "idempotency check is live. Replayed yesterday's events on staging and got zero duplicates."
+  },
+  {
+    "type": "message",
+    "ts": "1772533440.000133",
+    "user": "UKIM",
+    "user_profile": {
+      "display_name": "kim",
+      "real_name": "kim"
+    },
+    "text": "I'll tell Brightside, and they can delete the existing duplicates from the invoices list"
+  }
+]

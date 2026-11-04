@@ -1,0 +1,242 @@
+[
+  {
+    "type": "message",
+    "ts": "1772442120.000100",
+    "user": "UKIM",
+    "user_profile": {
+      "display_name": "kim",
+      "real_name": "kim"
+    },
+    "text": "morning all"
+  },
+  {
+    "type": "message",
+    "ts": "1772442240.000101",
+    "user": "UMO",
+    "user_profile": {
+      "display_name": "mo",
+      "real_name": "mo"
+    },
+    "text": "Acme Freight says their CSV export of all invoices spins and then fails. They have about 40k invoices."
+  },
+  {
+    "type": "message",
+    "ts": "1772442300.000102",
+    "user": "URAJ",
+    "user_profile": {
+      "display_name": "raj",
+      "real_name": "raj"
+    },
+    "text": "which export, the invoices list or the accounting one?"
+  },
+  {
+    "type": "message",
+    "ts": "1772442420.000103",
+    "user": "UMO",
+    "user_profile": {
+      "display_name": "mo",
+      "real_name": "mo"
+    },
+    "text": "invoices list, \"Export all\" button"
+  },
+  {
+    "type": "message",
+    "ts": "1772442540.000104",
+    "user": "UDANA",
+    "user_profile": {
+      "display_name": "dana",
+      "real_name": "dana"
+    },
+    "text": "Different thing: Northwind can't log in with SSO on Safari. It bounces them back to the login page forever."
+  },
+  {
+    "type": "message",
+    "ts": "1772442600.000105",
+    "user": "UKIM",
+    "user_profile": {
+      "display_name": "kim",
+      "real_name": "kim"
+    },
+    "text": "only Safari?"
+  },
+  {
+    "type": "message",
+    "ts": "1772442720.000106",
+    "user": "URAJ",
+    "user_profile": {
+      "display_name": "raj",
+      "real_name": "raj"
+    },
+    "text": "export runs as one request, 40k rows will hit the 30s gateway timeout. I'll look at streaming it."
+  },
+  {
+    "type": "message",
+    "ts": "1772442780.000107",
+    "user": "UDANA",
+    "user_profile": {
+      "display_name": "dana",
+      "real_name": "dana"
+    },
+    "text": "yes, Chrome works for them"
+  },
+  {
+    "type": "message",
+    "ts": "1772442900.000108",
+    "user": "UPRIYA",
+    "user_profile": {
+      "display_name": "priya",
+      "real_name": "priya"
+    },
+    "text": "Safari blocks the third-party cookie our IdP callback sets. Known issue since the auth domain move."
+  },
+  {
+    "type": "message",
+    "ts": "1772442960.000109",
+    "user": "UKIM",
+    "user_profile": {
+      "display_name": "kim",
+      "real_name": "kim"
+    },
+    "text": "coffee machine on 3 is fixed btw"
+  },
+  {
+    "type": "message",
+    "ts": "1772443080.000110",
+    "user": "UPRIYA",
+    "user_profile": {
+      "display_name": "priya",
+      "real_name": "priya"
+    },
+    "text": "workaround for now: have them allow cross-site tracking for login.ledgerly.app, or use Chrome"
+  },
+  {
+    "type": "message",
+    "ts": "1772443200.000111",
+    "user": "UDANA",
+    "user_profile": {
+      "display_name": "dana",
+      "real_name": "dana"
+    },
+    "text": "passing that on, thanks"
+  },
+  {
+    "type": "message",
+    "ts": "1772444460.000112",
+    "user": "URAJ",
+    "user_profile": {
+      "display_name": "raj",
+      "real_name": "raj"
+    },
+    "text": "PR up to stream the CSV in chunks instead of building it in memory: #2291"
+  },
+  {
+    "type": "message",
+    "ts": "1772445480.000113",
+    "user": "URAJ",
+    "user_profile": {
+      "display_name": "raj",
+      "real_name": "raj"
+    },
+    "text": "deployed. Export of 40k invoices now finishes in about 12s on staging"
+  },
+  {
+    "type": "message",
+    "ts": "1772445780.000114",
+    "user": "UMO",
+    "user_profile": {
+      "display_name": "mo",
+      "real_name": "mo"
+    },
+    "text": "Acme confirms it worked 🎉"
+  },
+  {
+    "type": "message",
+    "ts": "1772445900.000115",
+    "user": "UKIM",
+    "user_profile": {
+      "display_name": "kim",
+      "real_name": "kim"
+    },
+    "text": "nice"
+  },
+  {
+    "type": "message",
+    "ts": "1772446020.000116",
+    "user": "UPRIYA",
+    "user_profile": {
+      "display_name": "priya",
+      "real_name": "priya"
+    },
+    "text": "real SSO fix needs the callback moved onto our first-party domain. Ticket AUTH-418, not scheduled yet."
+  },
+  {
+    "type": "message",
+    "ts": "1772460000.000117",
+    "user": "ULEE",
+    "user_profile": {
+      "display_name": "lee",
+      "real_name": "lee"
+    },
+    "text": "v4.2 is out: recurring invoice templates, a faster dashboard, and multi-currency totals on reports. Notes are in #releases."
+  },
+  {
+    "type": "message",
+    "ts": "1772460120.000118",
+    "user": "UKIM",
+    "user_profile": {
+      "display_name": "kim",
+      "real_name": "kim"
+    },
+    "text": "🙌"
+  },
+  {
+    "type": "message",
+    "ts": "1772460360.000119",
+    "user": "UMO",
+    "user_profile": {
+      "display_name": "mo",
+      "real_name": "mo"
+    },
+    "text": "Customer asking what the API rate limit is. They're planning a nightly sync of ~5k invoices."
+  },
+  {
+    "type": "message",
+    "ts": "1772460540.000120",
+    "user": "URAJ",
+    "user_profile": {
+      "display_name": "raj",
+      "real_name": "raj"
+    },
+    "text": "100 requests per minute per API key, with a burst of 20"
+  },
+  {
+    "type": "message",
+    "ts": "1772460600.000121",
+    "user": "ULEE",
+    "user_profile": {
+      "display_name": "lee",
+      "real_name": "lee"
+    },
+    "text": "reminder that multi-currency totals are behind a flag for orgs created before March"
+  },
+  {
+    "type": "message",
+    "ts": "1772460720.000122",
+    "user": "URAJ",
+    "user_profile": {
+      "display_name": "raj",
+      "real_name": "raj"
+    },
+    "text": "for 5k invoices they should use the batch endpoint, 200 per call, so 25 calls"
+  },
+  {
+    "type": "message",
+    "ts": "1772460840.000123",
+    "user": "UMO",
+    "user_profile": {
+      "display_name": "mo",
+      "real_name": "mo"
+    },
+    "text": "perfect, sending them the batch docs"
+  }
+]
