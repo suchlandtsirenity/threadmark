@@ -12,7 +12,8 @@
   },
   "scripts": {
     "test": "node --test",
-    "eval": "node eval/run.js"
+    "eval": "node eval/run.js",
+    "build-example": "node scripts/build-example.js"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^1.4.0"
