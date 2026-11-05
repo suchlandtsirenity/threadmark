@@ -15,7 +15,7 @@ test('Slack rows: skips joins, unescapes text, sorts by time', () => {
   ];
   assert.deepEqual(parseSlack(rows), [
     { id: '1772441900.000100', at: '2026-03-02T08:58:20.000Z', author: 'U1', text: 'a < b' },
-    { id: '1772442000.000200', at: '2026-03-02T09:00:00.000Z', author: 'mo', text: 'see the doc & general' },
+    { id: '1772442000.000200', at: '2026-03-02T09:00:00.000Z', author: 'mo', text: 'see the doc & #general' },
   ]);
 });
 

@@ -1,0 +1,12 @@
+{
+  "$schema": "./node_modules/@stryker-mutator/core/schema/stryker-schema.json",
+  "testRunner": "command",
+  "commandRunner": { "command": "node --test" },
+  "mutate": ["src/**/*.js", "eval/metrics.js"],
+  "reporters": ["clear-text", "html", "json"],
+  "concurrency": 6,
+  "timeoutMS": 30000,
+  "coverageAnalysis": "off",
+  "ignorePatterns": [".git", "reports"],
+  "thresholds": { "high": 98, "low": 95, "break": 95 }
+}

@@ -13,9 +13,15 @@
   "scripts": {
     "test": "node --test",
     "eval": "node eval/run.js",
-    "build-example": "node scripts/build-example.js"
+    "build-example": "node scripts/build-example.js",
+    "mutate": "stryker run",
+    "fuzz": "FC_RUNS=100000 node --test test/properties.test.js"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^1.4.0"
+  },
+  "devDependencies": {
+    "@stryker-mutator/core": "^10.0.0",
+    "fast-check": "^4.10.2"
   }
 }

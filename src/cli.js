@@ -22,10 +22,12 @@ const USAGE = `Usage: threadmark <export> [options]
 
 Calling Claude needs ANTHROPIC_API_KEY.`;
 
-function positive(name, value) {
+function positive(name, value, { whole = false } = {}) {
   if (value === undefined) return undefined;
   const n = Number(value);
-  if (!(n > 0)) throw new Error(`--${name} must be a positive number`);
+  if (!(n > 0) || (whole && !Number.isInteger(n))) {
+    throw new Error(`--${name} must be a positive ${whole ? 'whole ' : ''}number, got "${value}"`);
+  }
   return n;
 }
 
@@ -48,6 +50,9 @@ async function main() {
     return;
   }
   if (values.record && values.replay) throw new Error('use --record or --replay, not both');
+  // Check options before reading the export or calling anything.
+  const gapMinutes = positive('gap', values.gap);
+  const maxBurst = positive('max-burst', values['max-burst'], { whole: true });
 
   const [path] = positionals;
   const messages = loadExport(path);
@@ -57,8 +62,8 @@ async function main() {
         : { mode: 'live' },
   );
   const bursts = await digest(messages, model, {
-    gapMinutes: positive('gap', values.gap),
-    maxBurst: positive('max-burst', values['max-burst']),
+    gapMinutes,
+    maxBurst,
     onProgress: (i, n) => console.error(`burst ${i} of ${n}`),
   });
 

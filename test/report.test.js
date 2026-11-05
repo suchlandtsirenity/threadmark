@@ -41,7 +41,7 @@ test('citations link to numbered messages in the transcript', () => {
 
 test('uncited points are flagged and loose messages are marked', () => {
   const html = renderReport({ title: 'support', bursts: [burst] });
-  assert.match(html, /Nobody knows why <span class="flag">uncited<\/span>/);
+  assert.match(html, /Nobody knows why<\/bdi> <span class="flag">uncited<\/span>/);
   assert.match(html, /<li id="m-3" class="loose">/);
 });
 

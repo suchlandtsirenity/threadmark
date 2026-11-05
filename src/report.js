@@ -1,11 +1,18 @@
 // Renders a digest as one self-contained HTML file: episodes with cited points,
 // then the transcript they link into. Chat text is untrusted, so every value
-// that reaches the page goes through esc().
+// that reaches the page goes through esc(). As a second line of defence, the
+// page's Content Security Policy only runs the one script and stylesheet below,
+// matched by hash, so even a missed escape couldn't run code or load anything.
+import { createHash } from 'node:crypto';
+
 export const esc = (s) => String(s).replace(/[&<>"']/g, (c) => (
   { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
 ));
 
 const anchor = (id) => `m-${esc(id)}`;
+// <bdi> stops right-to-left override characters in chat text from reordering
+// the text around them (a name, a citation, an "uncited" flag).
+const iso = (s) => `<bdi>${esc(s)}</bdi>`;
 const time = (at) => `${at.slice(0, 10)} ${at.slice(11, 16)}`;
 
 function renderPoint(point, numberOf) {
@@ -13,12 +20,12 @@ function renderPoint(point, numberOf) {
     .map((id) => `<a class="cite" href="#${anchor(id)}">${numberOf.get(id)}</a>`)
     .join('');
   const flag = point.uncited ? ' <span class="flag">uncited</span>' : '';
-  return `<li>${esc(point.text)}${flag} ${cites}</li>`;
+  return `<li>${iso(point.text)}${flag} ${cites}</li>`;
 }
 
 function renderEpisode(ep, numberOf) {
   return `<article class="episode">
-  <h3>${esc(ep.title)} <span class="status ${esc(ep.status)}">${esc(ep.status)}</span></h3>
+  <h3>${iso(ep.title)}${ep.status ? ` <span class="status ${esc(ep.status)}">${esc(ep.status)}</span>` : ''}</h3>
   <ul>${ep.points.map((p) => renderPoint(p, numberOf)).join('')}</ul>
   <p class="meta">${ep.messageIds.length} message${ep.messageIds.length === 1 ? '' : 's'}</p>
 </article>`;
@@ -28,8 +35,8 @@ function renderMessage(m, n, episodeOf) {
   const title = episodeOf.get(m.id);
   return `<li id="${anchor(m.id)}"${title ? '' : ' class="loose"'}>
   <span class="n">${n}</span>
-  <div><p class="meta">${esc(m.author)} · ${esc(time(m.at))} UTC${title ? ` · ${esc(title)}` : ''}</p>
-  <p class="text">${esc(m.text)}</p></div>
+  <div><p class="meta">${iso(m.author)} · ${esc(time(m.at))} UTC${title ? ` · ${iso(title)}` : ''}</p>
+  <p class="text">${iso(m.text)}</p></div>
 </li>`;
 }
 
@@ -55,6 +62,7 @@ export function renderReport({ title, bursts }) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="${CSP}">
 <title>${esc(title)}</title>
 <style>${CSS}</style>
 </head>
@@ -98,3 +106,6 @@ summary{cursor:pointer;color:var(--muted);font-size:.85rem;margin-top:12px}
 .messages .meta{margin:0}.text{margin:2px 0 0;white-space:pre-wrap;overflow-wrap:anywhere}
 .n{color:var(--muted);font-size:.8rem;min-width:24px;text-align:right}
 `;
+
+const sha256 = (s) => `'sha256-${createHash('sha256').update(s).digest('base64')}'`;
+const CSP = `default-src 'none'; script-src ${sha256(OPEN_TARGET)}; style-src ${sha256(CSS)}; base-uri 'none'; form-action 'none'`;
