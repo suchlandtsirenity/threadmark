@@ -40,19 +40,26 @@ covers the decisions and what's still unproven.
 conversations, written so that topics interleave. Grouping is scored on
 pairs of messages that share an episode.
 
-| | Episodes | Pair precision | Pair recall | Pair F1 |
-|---|---|---|---|---|
-| Time gaps only (baseline) | 3 | 33% | 100% | 50% |
-| Claude | not recorded yet | | | |
+| | Episodes | Pair precision | Pair recall | Pair F1 | Status right | Valid citations | Uncited points |
+|---|---|---|---|---|---|---|---|
+| Time gaps only (baseline) | 3 | 33% | 100% | 50% | n/a | n/a | n/a |
+| Claude (`claude-opus-5-5`) | 6 | 100% | 100% | 100% | 83% | 100% | 0% |
 
 Time gaps alone lump everything in a burst together, so they find every real pair
-and many false ones. That's the gap the model has to close. **Claude's scores
-aren't here yet because the responses haven't been recorded**, and this README
-won't quote numbers it can't reproduce. The live API path has not been run yet.
+and many false ones. Claude separates the interleaved conversations exactly and
+cites a real message for every point it makes. It gets 5 of 6 statuses right: the
+dark-mode thread ("not planned this quarter, add them to the feature request") is
+labelled `open`, and Claude closed it. That's a defensible reading, but the label
+stays as written rather than being changed to fit the score.
+
+Read these numbers for what they are: one recorded run, on 34 synthetic messages
+the author wrote. They show the pipeline works end to end against the real API,
+not how it does on a messy real channel. The responses are committed in
+`eval/recordings/`, so `npm run eval` reproduces this table without a key or cost.
 
 ```sh
-npm run eval                 # baseline, plus Claude if recordings exist
-npm run eval -- --record     # call Claude and save the responses
+npm run eval                 # baseline, plus Claude from the saved recordings
+npm run eval -- --record     # call Claude again and overwrite the recordings
 ```
 
 ## Running it

@@ -1,0 +1,129 @@
+{
+  "request": {
+    "model": "claude-opus-5-5",
+    "max_tokens": 16000,
+    "system": "You read a slice of a team chat channel and split it into episodes.\n\nAn episode is one conversation about one topic: a question and its answers, an\nincident and its fix, a decision being made. Conversations in a busy channel\ninterleave, so an episode's messages need not be consecutive. Leave out messages\nthat belong to no real conversation (greetings, \"thanks!\", off-topic chatter).\n\nFor each episode give:\n- title: under 8 words, specific (\"CSV export times out for large orgs\", not \"Export issue\")\n- status: \"resolved\" if the conversation reached an answer or fix, \"open\" if it\n  ended without one, \"info\" if it was an announcement or FYI\n- message_ids: every message that belongs to it, using the IDs in square brackets\n- points: 1 to 4 short sentences summarising what happened. Each point lists in\n  \"cites\" the IDs of the messages that support it. Only cite messages in the same\n  episode. A point you cannot support with a message should not be written.\n\nUse only what the messages say. Do not guess at causes or outcomes that nobody stated.",
+    "output_config": {
+      "effort": "medium",
+      "format": {
+        "type": "json_schema",
+        "schema": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "episodes"
+          ],
+          "properties": {
+            "episodes": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "title",
+                  "status",
+                  "message_ids",
+                  "points"
+                ],
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "resolved",
+                      "open",
+                      "info"
+                    ]
+                  },
+                  "message_ids": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "points": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "text",
+                        "cites"
+                      ],
+                      "properties": {
+                        "text": {
+                          "type": "string"
+                        },
+                        "cites": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "messages": [
+      {
+        "role": "user",
+        "content": "--- 2026-03-02 (UTC) ---\n[1772460000.000117] 14:00 lee: v4.2 is out: recurring invoice templates, a faster dashboard, and multi-currency totals on reports. Notes are in #releases.\n[1772460120.000118] 14:02 kim: 🙌\n[1772460360.000119] 14:06 mo: Customer asking what the API rate limit is. They're planning a nightly sync of ~5k invoices.\n[1772460540.000120] 14:09 raj: 100 requests per minute per API key, with a burst of 20\n[1772460600.000121] 14:10 lee: reminder that multi-currency totals are behind a flag for orgs created before March\n[1772460720.000122] 14:12 raj: for 5k invoices they should use the batch endpoint, 200 per call, so 25 calls\n[1772460840.000123] 14:14 mo: perfect, sending them the batch docs"
+      }
+    ]
+  },
+  "response": {
+    "model": "claude-opus-5-5",
+    "id": "msg_011CgsdVc4tbscjEbaKC6q58",
+    "type": "message",
+    "role": "assistant",
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"episodes\":[{\"title\":\"v4.2 release announcement\",\"status\":\"info\",\"message_ids\":[\"1772460000.000117\",\"1772460600.000121\"],\"points\":[{\"text\":\"v4.2 shipped with recurring invoice templates, a faster dashboard, and multi-currency totals on reports; notes are in #releases.\",\"cites\":[\"1772460000.000117\"]},{\"text\":\"Multi-currency totals are behind a flag for orgs created before March.\",\"cites\":[\"1772460600.000121\"]}]},{\"title\":\"API rate limit for nightly invoice sync\",\"status\":\"resolved\",\"message_ids\":[\"1772460360.000119\",\"1772460540.000120\",\"1772460720.000122\",\"1772460840.000123\"],\"points\":[{\"text\":\"A customer asked about the API rate limit for a nightly sync of about 5k invoices.\",\"cites\":[\"1772460360.000119\"]},{\"text\":\"The limit is 100 requests per minute per API key, with a burst of 20.\",\"cites\":[\"1772460540.000120\"]},{\"text\":\"Raj recommended the batch endpoint at 200 invoices per call, which comes to 25 calls.\",\"cites\":[\"1772460720.000122\"]},{\"text\":\"Mo is sending the customer the batch docs.\",\"cites\":[\"1772460840.000123\"]}]}]}"
+      }
+    ],
+    "container": null,
+    "stop_reason": "end_turn",
+    "stop_sequence": null,
+    "stop_details": null,
+    "usage": {
+      "input_tokens": 1155,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+        "ephemeral_5m_input_tokens": 0,
+        "ephemeral_1h_input_tokens": 0
+      },
+      "iterations": [
+        {
+          "input_tokens": 1155,
+          "output_tokens": 420,
+          "cache_read_input_tokens": 0,
+          "cache_creation_input_tokens": 0,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 0
+          },
+          "type": "message",
+          "model": null
+        }
+      ],
+      "output_tokens": 420,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "service_tier": "standard",
+      "inference_geo": "global",
+      "speed": "standard"
+    },
+    "diagnostics": null
+  }
+}

@@ -175,9 +175,28 @@ full suite to confirm it really survives:
 - The live path has run through the real SDK against a fake server, but never
   against the real API, so no real response has been through it.
 - No Claude scores yet. Recording them costs money, so it waits for a decision.
+  (Both settled on 2026-11-09: see "First real API run" below.)
 
 One more, found in the final read-through of the diff and caused by this review:
 verification now turns an invalid status into none, but the report still drew a
 status chip, so it would have shown the word "null". It has a test that was
 confirmed failing before the fix. Mutating the fix then showed nothing checked that a
 valid status chip appears at all; a test pins that too.
+
+## First real API run (2026-11-09)
+
+`npm run eval -- --record` ran against the real API with `claude-opus-5-5`:
+three requests, one per burst, 1,155–1,514 input and 420–698 output tokens each.
+This settles both items above: the live path works with real responses, and
+there are now Claude scores. The responses are in `eval/recordings/`.
+
+- Grouping: 6 episodes, 100% pair precision, recall and F1. The baseline gets 50% F1.
+- Citations: every point cites a real message in its episode; none uncited.
+- Status: 5 of 6 right. The dark-mode thread ends with "not planned this quarter,
+  add them to the feature request". It's labelled `open` and Claude closed it.
+  Either reading holds up. The label stays, because labels don't change to fit a score.
+
+The prompt was not changed before or after this run, so the scores aren't tuned
+against the eval. They are still one run on 34 synthetic messages, and that's all
+they show. The README contract test now checks every column of the score table, not
+just the grouping columns, so the status and citation numbers can't drift either.

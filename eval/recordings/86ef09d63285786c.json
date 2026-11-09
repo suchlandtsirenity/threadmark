@@ -1,0 +1,129 @@
+{
+  "request": {
+    "model": "claude-opus-5-5",
+    "max_tokens": 16000,
+    "system": "You read a slice of a team chat channel and split it into episodes.\n\nAn episode is one conversation about one topic: a question and its answers, an\nincident and its fix, a decision being made. Conversations in a busy channel\ninterleave, so an episode's messages need not be consecutive. Leave out messages\nthat belong to no real conversation (greetings, \"thanks!\", off-topic chatter).\n\nFor each episode give:\n- title: under 8 words, specific (\"CSV export times out for large orgs\", not \"Export issue\")\n- status: \"resolved\" if the conversation reached an answer or fix, \"open\" if it\n  ended without one, \"info\" if it was an announcement or FYI\n- message_ids: every message that belongs to it, using the IDs in square brackets\n- points: 1 to 4 short sentences summarising what happened. Each point lists in\n  \"cites\" the IDs of the messages that support it. Only cite messages in the same\n  episode. A point you cannot support with a message should not be written.\n\nUse only what the messages say. Do not guess at causes or outcomes that nobody stated.",
+    "output_config": {
+      "effort": "medium",
+      "format": {
+        "type": "json_schema",
+        "schema": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "episodes"
+          ],
+          "properties": {
+            "episodes": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "title",
+                  "status",
+                  "message_ids",
+                  "points"
+                ],
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "resolved",
+                      "open",
+                      "info"
+                    ]
+                  },
+                  "message_ids": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "points": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "text",
+                        "cites"
+                      ],
+                      "properties": {
+                        "text": {
+                          "type": "string"
+                        },
+                        "cites": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "messages": [
+      {
+        "role": "user",
+        "content": "--- 2026-03-03 (UTC) ---\n[1772530200.000124] 09:30 kim: Brightside reports duplicate invoices created from their Stripe webhook, roughly 1 in 50\n[1772530380.000125] 09:33 priya: probably Stripe retrying after a slow response from us. Do the duplicates have the same Stripe event ID?\n[1772530560.000126] 09:36 dana: unrelated but three customers this week asked for a dark mode. Is that on the roadmap?\n[1772530680.000127] 09:38 kim: yes, same event ID on each pair\n[1772530800.000128] 09:40 lee: dark mode isn't planned this quarter. Can you add those customers to the feature request so we can count them?\n[1772530860.000129] 09:41 priya: then we're not deduplicating on event ID. I'll add an idempotency check keyed on it.\n[1772530980.000130] 09:43 dana: will do\n[1772531100.000131] 09:45 mo: lunch order going in at 11 if anyone wants in\n[1772533200.000132] 10:20 priya: idempotency check is live. Replayed yesterday's events on staging and got zero duplicates.\n[1772533440.000133] 10:24 kim: I'll tell Brightside, and they can delete the existing duplicates from the invoices list"
+      }
+    ]
+  },
+  "response": {
+    "model": "claude-opus-5-5",
+    "id": "msg_011CgsdVvjoPjyHsiPn6nQhT",
+    "type": "message",
+    "role": "assistant",
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"episodes\":[{\"title\":\"Brightside duplicate invoices from Stripe webhook\",\"status\":\"resolved\",\"message_ids\":[\"1772530200.000124\",\"1772530380.000125\",\"1772530680.000127\",\"1772530860.000129\",\"1772533200.000132\",\"1772533440.000133\"],\"points\":[{\"text\":\"Brightside reported duplicate invoices from their Stripe webhook, roughly 1 in 50.\",\"cites\":[\"1772530200.000124\"]},{\"text\":\"Each duplicate pair had the same Stripe event ID, so events were not being deduplicated on event ID.\",\"cites\":[\"1772530380.000125\",\"1772530680.000127\",\"1772530860.000129\"]},{\"text\":\"Priya shipped an idempotency check keyed on event ID, and replaying yesterday's events on staging produced zero duplicates.\",\"cites\":[\"1772530860.000129\",\"1772533200.000132\"]},{\"text\":\"Kim will tell Brightside, and they can delete the existing duplicates from the invoices list.\",\"cites\":[\"1772533440.000133\"]}]},{\"title\":\"Customer requests for dark mode\",\"status\":\"resolved\",\"message_ids\":[\"1772530560.000126\",\"1772530800.000128\",\"1772530980.000130\"],\"points\":[{\"text\":\"Dana said three customers this week asked for dark mode and asked whether it is on the roadmap.\",\"cites\":[\"1772530560.000126\"]},{\"text\":\"Lee said dark mode isn't planned this quarter and asked Dana to add those customers to the feature request so they can be counted.\",\"cites\":[\"1772530800.000128\"]},{\"text\":\"Dana agreed to add them.\",\"cites\":[\"1772530980.000130\"]}]}]}"
+      }
+    ],
+    "container": null,
+    "stop_reason": "end_turn",
+    "stop_sequence": null,
+    "stop_details": null,
+    "usage": {
+      "input_tokens": 1288,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+        "ephemeral_5m_input_tokens": 0,
+        "ephemeral_1h_input_tokens": 0
+      },
+      "iterations": [
+        {
+          "input_tokens": 1288,
+          "output_tokens": 547,
+          "cache_read_input_tokens": 0,
+          "cache_creation_input_tokens": 0,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 0
+          },
+          "type": "message",
+          "model": null
+        }
+      ],
+      "output_tokens": 547,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "service_tier": "standard",
+      "inference_geo": "global",
+      "speed": "standard"
+    },
+    "diagnostics": null
+  }
+}

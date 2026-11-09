@@ -101,19 +101,20 @@ test('every score in the README is what `npm run eval` prints', async () => {
   const { stdout } = await run(process.execPath, [root('eval/run.js')]);
   const readme = readFileSync(root('README.md'), 'utf8');
   const printed = new Map(stdout.split('\n').filter((l) => l.startsWith('| ') && !l.startsWith('| |'))
-    .map((l) => l.split('|').map((c) => c.trim())).map(([, name, eps, p, r, f1]) => [name, [eps, p, r, f1]]));
+    .map((l) => l.split('|').map((c) => c.trim())).map(([, name, ...cells]) => [name, cells.slice(0, -1)]));
   const tableRows = readme.split('\n').filter((l) => /^\| (Time gaps|Claude)/.test(l));
   assert.ok(tableRows.length > 0, 'README has an evaluation table');
   for (const row of tableRows) {
-    const [, name, eps, p, r, f1] = row.split('|').map((c) => c.trim());
-    if (/not recorded yet/.test(eps)) {
+    const [, name, ...cells] = row.split('|').map((c) => c.trim());
+    cells.pop(); // the empty cell after the closing |
+    if (/not recorded yet/.test(cells[0])) {
       assert.ok(![...printed.keys()].some((k) => k.startsWith('Claude')), 'README says no Claude scores, but eval printed some');
       continue;
     }
-    const key = name.replace(/ \(baseline\)$/, '');
+    const key = name.replace(/ \(.*\)$/, '');
     const match = [...printed].find(([k]) => k.startsWith(key));
     assert.ok(match, `eval printed no row for "${name}"`);
-    assert.deepEqual([eps, p, r, f1], match[1], `README row "${name}" doesn't match eval output`);
+    assert.deepEqual(cells, match[1], `README row "${name}" doesn't match eval output`);
   }
 });
 
